@@ -1,0 +1,34 @@
+:root {
+    --main-font: 'Tenor Sans', sans-serif;
+    --theme-col: #0062f8;
+    --font-col: #3d464d;
+}
+
+html,
+body {
+    /* Templating */
+    font-family: var(--main-font);
+    color: var(--font-col);
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* font style */
+.ft-blue{
+    color: var(--theme-col);
+}
+
+
+
+
+.grid{
+    display: grid;
+    grid-template-columns: 1fr 50% 1fr;
+}
+
+.menu {
+    display: flex;
+    flex-direction: column;
+}

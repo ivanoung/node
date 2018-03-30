@@ -1,12 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Dropfox</title>
+    <link href="https://fonts.googleapis.com/css?family=Tenor+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="./style/style.css">
 </head>
+
 <body>
-    
+    <div class="web-container grid">
+        <section class="menu ">
+            <a href="" class="menu-items ft-blue">Home</a>
+            <a href="" class="menu-items ft-blue">File</a>
+            <a href="" class="menu-items ft-blue">Paper</a>
+
+        </section>
+        <section class="file-list">
+            <h3>Recent</h3>
+            <hr>
+            <div class="file-items">
+                Example Docs
+            </div>
+        </section>
+        <section class="upload">
+            <form ref='uploadForm' id='uploadForm' action='http://localhost:8000/upload' method='post' encType="multipart/form-data">
+                <input type="file" name="sampleFile" />
+                <input type='submit' value='Upload!' />
+            </form>
+
+        </section>
+    </div>
+
 </body>
+
 </html>

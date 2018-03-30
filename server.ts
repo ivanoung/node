@@ -1,17 +1,59 @@
 import express from 'express';
+import multer from 'multer';
+import * as ejs from 'ejs';
 import * as fs from 'fs';
+import * as path from "path";
 import * as bodyParser from 'body-parser';
-import fileUpload from 'express-fileupload';
+// import fileUpload from 'express-fileupload';
 
+// Set storage engine
+const storage = multer.diskStorage({
+    destination: './public/uploads/',
+    filename: function(req, file, cb){
+        cb(null, `${file.filename}-${Date.now()}${path.extname(file.originalname)}`)
+    }
+});
 
+// Init upload
+const upload = multer({
+    storage: storage
+}).single('myImage');
 
 const app = express();
-app.use(fileUpload());
+// app.use(fileUpload());
 
 
-app.get('/', (req, res) => {
-    res.sendFile(__dirname + '/index.html');
+// Setup EJS
+app.set('view engine', 'ejs');
+
+// Public Folder
+app.use(express.static('./public'));
+
+app.get('/', (req,res)=>{res.render('index')})
+
+app.post('/upload', (req, res)=>{
+    upload(req, res,(err)=>{
+        if (err){
+            res.render('index', {
+                msg: err
+            });
+        }else {
+            console.log(req.file);
+            res.send('test');
+        }
+    })
 })
+
+app.listen(8080, ()=> console.log(`Server started on port 8080`));
+
+
+
+
+
+// ------------------------------------------------------------------------------------------------------------------------
+// app.get('/', (req, res) => {
+//     res.sendFile(__dirname + '/index.html');
+// })
 
 // app.post('/upload-file', (req, res) => {
 
@@ -23,17 +65,17 @@ app.get('/', (req, res) => {
 
 // })
 
-app.post('/upload', function (req, res) {
-    if (!req.files)
-        return res.status(400).send('No files were uploaded.');
-    else {
-        let sampleFile = req.files.sampleFile;
-        if (! (sampleFile instanceof Array) ) {
-            fs.writeFile('test.jpg', sampleFile.data, (err) => { console.log(err) })
-        }
+// app.post('/upload', function (req, res) {
+//     if (!req.files)
+//         return res.status(400).send('No files were uploaded.');
+//     else {
+//         let sampleFile = req.files.sampleFile;
+//         if (! (sampleFile instanceof Array) ) {
+//             fs.writeFile('test.jpg', sampleFile.data, (err) => { console.log(err) })
+//         }
 
-        // res.send("did go through");
-    }
+//         // res.send("did go through");
+//     }
 
     // The name of the input field (i.e. "sampleFile") is used to retrieve the uploaded file
 
@@ -45,7 +87,7 @@ app.post('/upload', function (req, res) {
 
     //     res.send('File uploaded!');
     // });
-});
+// });
 
-app.listen(8080);
+
 

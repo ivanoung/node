@@ -20,15 +20,24 @@ body {
     color: var(--theme-col);
 }
 
-
-
+/* Structure styling */
+.web-container {
+    width: 100vw;
+    height: 100vh;
+    box-sizing: border-box;
+}
 
 .grid{
     display: grid;
-    grid-template-columns: 1fr 50% 1fr;
+    grid-template-columns: 1fr 60% 2fr;
 }
 
 .menu {
     display: flex;
     flex-direction: column;
+    background-color: #eee; 
+}
+
+.icon{
+    width: 40%;
 }

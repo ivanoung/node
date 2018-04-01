@@ -10,18 +10,21 @@ import { serveStatic } from "serve-static";
 const app = express();
 
 app.set("view engine", "ejs");
-app.use(express.static("public"));
+app.use(express.static("./public"));
 
-app.get("/", (req, res, next) => {
-  next();
-});
+// app.get("/", (req, res, next) => {
+//   next();
+// });
 
-app.get("/", (req, res) => {
-  let list = fs.readdir("./public/uploads", "utf8", (err, listofnames) => {
-    if (!err) {
-      res.render("upload", { data: listofnames });
-    }
-  });
-});
+// app.get("/", (req, res) => {
+//   let list = fs.readdir("./public/uploads", "utf8", (err, listofnames) => {
+//     if (!err) {
+//       res.render("upload", { data: listofnames });
+//     }
+//   });
+// });
+
+
+// app.get('/upload')
 
 app.listen(8080);

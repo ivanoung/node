@@ -8,7 +8,7 @@
   <title>Dropfox</title>
   <link href="https://fonts.googleapis.com/css?family=Tenor+Sans" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-  <link rel="stylesheet" href="../public/style/style.css">
+  <link rel="stylesheet" href="/style/style.css">
 </head>
 
 <body>
@@ -26,6 +26,7 @@
     </section>
     <section>
       <h1>File Upload List</h1>
+      <% typeof msg != 'undefined' ? msg : "" %>
       <ul>
         <% data.forEach((item)=>{ %>
           <li>
@@ -41,7 +42,7 @@
         <div class="file-field input-field">
           <div class="btn grey">
             <span>File</span>
-            <input type="file" name="myImage">
+            <input type="file" name="uploadFile">
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">

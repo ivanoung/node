@@ -80,18 +80,13 @@ app.get('/uploads/:filename', (req, res) => {
         let requestFile = `${__dirname}/public/uploads/${req.params.filename}`;
         res.setHeader('Content-disposition', 'attachment; filename=' + path.basename(requestFile));
         fs.readFile(requestFile, (err, buffer) => {
-            console.log("Saved in cache");
             caches[req.params.filename] = buffer;
             res.send(buffer);
         });
-        console.log("Cache loaded");
-        console.log(caches);
-        // (caches[req.params.filename]).pipe(res);
     }
     else {
         console.log('run this');
         res.send(caches[req.params.filename]);
-        // (caches[req.params.filename]).pipe(res);
     }
     // res.download(`${__dirname}/public/uploads/${req.params.filename}`);
 });

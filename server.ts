@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
   //   console.log(stats.mtime);
   // })
 
- 
+
 
   let list = fs.readdir(
     path.join(__dirname, "/public/uploads"),
@@ -53,7 +53,7 @@ app.get("/", (req, res) => {
 app.post("/upload", (req, res) => {
   // console.log(req.files);
 
-  let inputNameField = "uploadFile";
+  let inputNameField = "uploadFile"; 
   if (JSON.stringify(req.files) == "{}") {
     res.status(400).end("No files were uploaded");
   } else if (req.files) {
@@ -92,6 +92,7 @@ app.get('/uploads/:filename', (req, res) => {
   
   if (!(caches[req.params.filename])){
     let requestFile = `${__dirname}/public/uploads/${req.params.filename}`;
+
     res.setHeader('Content-disposition','attachment; filename='+ path.basename(requestFile));
 
     fs.readFile(requestFile,(err, buffer)=>{
@@ -102,7 +103,7 @@ app.get('/uploads/:filename', (req, res) => {
   }
 
   else {
-    console.log('run this');
+    console.log('run this');  
     res.send(caches[req.params.filename]);
   }
 

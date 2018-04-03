@@ -3,11 +3,18 @@ import * as hbs from 'hbs';
 import * as ejs from "ejs";
 import * as fs from "fs";
 import * as path from "path";
+import * as mime from 'mime';
 import * as bodyParser from "body-parser";
 import { serveStatic } from "serve-static";
 import fileUpload from "express-fileupload";
 // import multer from "multer";
 
+// interface cacheContent {
+//   (s: string):(y: ReadableStream)
+// }
+
+// Init cache
+const caches:any = {};
 
 // Init express
 const app = express();
@@ -26,9 +33,7 @@ app.get("/", (req, res) => {
   //   console.log(stats.mtime);
   // })
 
-  fs.readFile(`${__dirname}/public/uploads/one.txt`,'buffer',(err, data)=>{
-    res.sendFile(data);
-  })
+ 
 
   let list = fs.readdir(
     path.join(__dirname, "/public/uploads"),
@@ -47,8 +52,8 @@ app.get("/", (req, res) => {
 // Routing for uploading file/folder, one by one
 app.post("/upload", (req, res) => {
   // console.log(req.files);
-  let inputNameField = "uploadFile";
 
+  let inputNameField = "uploadFile";
   if (JSON.stringify(req.files) == "{}") {
     res.status(400).end("No files were uploaded");
   } else if (req.files) {
@@ -83,15 +88,28 @@ app.post("/upload", (req, res) => {
   }
 });
 
-app.get('/uploads/:filename',(req, res)=>{
-  console.log(`${__dirname}/uploads/${req.params.filename}`);
+app.get('/uploads/:filename', (req, res) => {
   
-  fs.readFile(`${__dirname}/public/uploads/${req.params.filename}`,"utf8",(err, data)=>{
-    res.sendFile(`${__dirname}/public/uploads/${req.params.filename}`);
-  });
+  if (!(caches[req.params.filename])){
+    let requestFile = `${__dirname}/public/uploads/${req.params.filename}`;
+    res.setHeader('Content-disposition','attachment; filename='+ path.basename(requestFile));
 
-  // res.end(console.log(req.params.filename));
-  // res.download(req.params.filename);
+    fs.readFile(requestFile,(err, buffer)=>{
+      caches[req.params.filename] = buffer;
+      res.send(buffer);
+    })
+
+  }
+
+  else {
+    console.log('run this');
+    res.send(caches[req.params.filename]);
+  }
+
+  
+  
+
+  // res.download(`${__dirname}/public/uploads/${req.params.filename}`);
 })
 
 app.listen(8080, () => console.log(`Server running on port 8080`));

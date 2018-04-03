@@ -1,4 +1,5 @@
 import express from "express";
+import * as hbs from 'hbs';
 import * as ejs from "ejs";
 import * as fs from "fs";
 import * as path from "path";
@@ -17,13 +18,17 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/public/views"));
 
 // Serving static page
-app.use(express.static(path.join(__dirname, "/public")));
+// app.use(express.static(path.join(__dirname, "/public")));
 
 // Setting homepage
 app.get("/", (req, res) => {
   // let stat = fs.stat('./public/uploads/hotchick.jpg',(err, stats)=>{
   //   console.log(stats.mtime);
   // })
+
+  fs.readFile(`${__dirname}/public/uploads/one.txt`,'buffer',(err, data)=>{
+    res.sendFile(data);
+  })
 
   let list = fs.readdir(
     path.join(__dirname, "/public/uploads"),
@@ -79,8 +84,14 @@ app.post("/upload", (req, res) => {
 });
 
 app.get('/uploads/:filename',(req, res)=>{
-  console.log(req.params.filename);
-  res.download(req.params.filename);
+  console.log(`${__dirname}/uploads/${req.params.filename}`);
+  
+  fs.readFile(`${__dirname}/public/uploads/${req.params.filename}`,"utf8",(err, data)=>{
+    res.sendFile(`${__dirname}/public/uploads/${req.params.filename}`);
+  });
+
+  // res.end(console.log(req.params.filename));
+  // res.download(req.params.filename);
 })
 
 app.listen(8080, () => console.log(`Server running on port 8080`));

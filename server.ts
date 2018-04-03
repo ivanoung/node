@@ -21,10 +21,10 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "/public/views"));
 
 // Serving static page
-app.use(express.static(path.join(__dirname, "/public")));
+// app.use(express.static(path.join(__dirname, "/public")));
 
 
-function readDirectory (res: Response){
+function readDirectory(res: Response) {
   let list = fs.readdir(
     path.join(__dirname, "/public/uploads"),
     "utf8",
@@ -43,17 +43,13 @@ function readDirectory (res: Response){
 // Setting homepage
 app.get("/", (req, res) => {
 
-  let list = fs.readdir(
-    path.join(__dirname, "/public/uploads"),
-    "utf8",
-    (err, listofnames) => {
-      if (!err) {
-        console.log(listofnames);
-        res.render("upload", { data: listofnames });
-      } else {
-        res.render("upload", { data: ["Threre is nothing inside the list"] });
-      }
+  fs.readdir(path.join(__dirname, "/public/uploads"), "utf8", (err, listofnames) => {
+    if (!err) {
+      res.render("upload", { data: listofnames });
+    } else {
+      res.render("upload", { data: ["Threre is nothing inside the list"] });
     }
+  }
   );
 });
 
